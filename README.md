@@ -57,6 +57,24 @@ npm start
 5. 在 Service → Settings → **Networking** → Generate Domain，生成公网访问地址（Railway 自动提供 HTTPS）。
 6. 打开生成的域名，用 `admin` + 你设置的密码登录即可。之后每次推送代码到部署分支，Railway 会自动重新部署。
 
+### 一键配置脚本（Windows）
+
+项目提供 `scripts/setup-railway.ps1`，会自动检查 Railway CLI、完成登录和项目关联、设置环境变量、创建 `/data` 持久化卷、部署并生成域名。
+
+配置已有 Railway 项目：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\setup-railway.ps1
+```
+
+新建 Railway 项目并配置：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\scripts\setup-railway.ps1 -NewProject
+```
+
+运行过程中会安全提示输入管理员初始密码，密码不会保存到脚本或 Git。部署使用项目内的 `Dockerfile`，其中已安装 Node.js 和 Python 3。
+
 > 提示：会话令牌保存在内存中，每次重新部署后需要重新登录，属正常现象。
 
 ## API 一览

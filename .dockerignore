@@ -1,0 +1,8 @@
+.git
+.railway
+node_modules
+data
+*.log
+__pycache__
+*.pyc
+.test-data-*
