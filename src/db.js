@@ -2,7 +2,8 @@
 const fs = require('fs');
 const path = require('path');
 
-const DATA_DIR = path.join(__dirname, '..', 'data');
+// 部署到 Railway 等平台时，通过 DATA_DIR 指向持久化卷挂载路径（如 /data），避免重新部署丢数据
+const DATA_DIR = process.env.DATA_DIR || path.join(__dirname, '..', 'data');
 const DB_FILE = path.join(DATA_DIR, 'users.json');
 
 let cache = null;

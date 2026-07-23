@@ -33,6 +33,22 @@ npm start
 | --- | --- | --- |
 | `PORT` | 服务端口 | `3000` |
 | `ADMIN_PASSWORD` | 首次启动创建的管理员初始密码 | `admin123` |
+| `DATA_DIR` | 用户数据存放目录（部署时指向持久化卷） | 项目内 `data/` |
+
+## 部署到 Railway
+
+仓库已内置 `railway.json` 部署配置，步骤如下：
+
+1. 登录 [Railway](https://railway.app) → **New Project** → **Deploy from GitHub repo**，选择本仓库（首次需授权 Railway 访问你的 GitHub）。
+2. 部署分支默认为 `main`（如需部署其他分支，在 Service → Settings → Source 中修改）。
+3. **挂载持久化卷（重要，否则重新部署会丢数据）**：在 Service 上右键或进入 Settings → **Volumes** → Add Volume，挂载路径填 `/data`。
+4. 在 Service → **Variables** 中添加环境变量：
+   - `DATA_DIR` = `/data`
+   - `ADMIN_PASSWORD` = 你自定义的初始管理员密码（建议设置，别用默认的 admin123）
+5. 在 Service → Settings → **Networking** → Generate Domain，生成公网访问地址（Railway 自动提供 HTTPS）。
+6. 打开生成的域名，用 `admin` + 你设置的密码登录即可。之后每次推送代码到部署分支，Railway 会自动重新部署。
+
+> 提示：会话令牌保存在内存中，每次重新部署后需要重新登录，属正常现象。
 
 ## API 一览
 
