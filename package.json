@@ -1,0 +1,17 @@
+{
+  "name": "account-manage",
+  "version": "1.0.0",
+  "description": "账号管理网页后台 - 基于 Node.js + Express 的用户账号管理系统",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
+}
