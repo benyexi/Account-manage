@@ -12,8 +12,8 @@ const ROLES = ['admin', 'guest'];
 const STATUSES = ['active', 'disabled'];
 const AUTHORIZATION_PLANS = ['unchanged', 'none', 'day', 'month', 'permanent'];
 const SLOT_PRICE = 300;
-const MAX_SLOTS = 10;
-const MAX_TASK_DURATION = 300;
+const MAX_SLOTS = 2147483;
+const MAX_TASK_DURATION = 320;
 
 function publicUser(u) {
   const { passwordHash, ...rest } = u;

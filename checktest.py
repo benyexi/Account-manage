@@ -26,8 +26,8 @@ def parse_args():
     ipaddress.ip_address(args.ip)
     if not 1 <= args.port <= 65535:
         parser.error("port must be between 1 and 65535")
-    if not 1 <= args.duration <= 300:
-        parser.error("duration must be between 1 and 300 seconds")
+    if not 1 <= args.duration <= 320:
+        parser.error("duration must be between 1 and 320 seconds")
     return args
 
 
