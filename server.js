@@ -9,6 +9,9 @@ const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use('/api', routes);
+app.get('/', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', '锁服.html'));
+});
 app.use(express.static(path.join(__dirname, 'public')));
 
 // 管理员界面挂在 /admin，游客入口（登录/注册/个人中心)在 /

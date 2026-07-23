@@ -53,10 +53,18 @@ function escapeHtml(s) {
 async function loadStats() {
   const s = await api('/stats');
   $('#stat-total').textContent = s.total;
+  $('#stat-authorized').textContent = s.authorized;
   $('#stat-admins').textContent = s.admins;
   $('#stat-guests').textContent = s.guests;
   $('#stat-active').textContent = s.active;
   $('#stat-disabled').textContent = s.disabled;
+}
+
+function authorizationLabel(user) {
+  if (user.role === 'admin' || user.authorizationPermanent) return '永久';
+  if (!user.authorizedUntil) return '未授权';
+  if (!user.authorized) return '已到期';
+  return `至 ${fmtTime(user.authorizedUntil)}`;
 }
 
 async function loadUsers() {
@@ -80,12 +88,12 @@ async function loadUsers() {
       <tr>
         <td>${u.id}</td>
         <td>${escapeHtml(u.username)}</td>
-        <td>${escapeHtml(u.nickname) || '—'}</td>
-        <td>${escapeHtml(u.email) || '—'}</td>
+        <td><span class="tag ${u.authorized ? 'tag-active' : 'tag-disabled'}">${escapeHtml(authorizationLabel(u))}</span></td>
+        <td>${u.points}</td>
+        <td>${u.slots}</td>
         <td><span class="tag ${u.role === 'admin' ? 'tag-admin' : 'tag-user'}">${u.role === 'admin' ? '管理员' : '游客'}</span></td>
         <td><span class="tag ${u.status === 'active' ? 'tag-active' : 'tag-disabled'}">${u.status === 'active' ? '正常' : '已禁用'}</span></td>
         <td>${fmtTime(u.lastLoginAt)}</td>
-        <td>${fmtTime(u.createdAt)}</td>
         <td>
           <div class="row-actions">
             <button class="btn btn-sm" data-edit="${u.id}">编辑</button>
@@ -117,6 +125,9 @@ function openUserModal(user) {
   $('#f-role').value = user?.role || 'guest';
   $('#f-status').value = user?.status || 'active';
   $('#f-remark').value = user?.remark || '';
+  $('#f-authorization').value = user ? 'unchanged' : 'none';
+  $('#f-points').value = user?.points ?? 0;
+  $('#f-slots').value = user?.slots ?? 1;
   $('#user-form-error').textContent = '';
   $('#user-modal').classList.remove('hidden');
 }
@@ -171,6 +182,9 @@ $('#user-form').addEventListener('submit', async (e) => {
     role: $('#f-role').value,
     status: $('#f-status').value,
     remark: $('#f-remark').value.trim(),
+    authorizationPlan: $('#f-authorization').value,
+    points: Number($('#f-points').value),
+    slots: Number($('#f-slots').value),
   };
   const password = $('#f-password').value;
   if (password) body.password = password;

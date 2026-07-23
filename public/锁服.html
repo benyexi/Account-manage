@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>服务器联通性检查</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="auth-view" class="login-wrap hidden">
+    <div class="login-card">
+      <div class="login-logo">⌁</div>
+      <h1>服务器联通性检查</h1>
+      <p class="login-sub">登录后管理授权、积分与检查任务</p>
+      <div class="tabs">
+        <button type="button" class="tab active" data-tab="login">登 录</button>
+        <button type="button" class="tab" data-tab="register">注 册</button>
+      </div>
+
+      <form id="login-form">
+        <label>用户名
+          <input type="text" id="login-username" autocomplete="username" required />
+        </label>
+        <label>密码
+          <input type="password" id="login-password" autocomplete="current-password" required />
+        </label>
+        <button type="submit" class="btn btn-primary btn-block">登 录</button>
+        <p id="login-error" class="error-text"></p>
+      </form>
+
+      <form id="register-form" class="hidden">
+        <label>用户名 <span class="hint">（3-32 位字母、数字、_ 或 -）</span>
+          <input type="text" id="reg-username" autocomplete="username" required />
+        </label>
+        <label>密码
+          <input type="password" id="reg-password" placeholder="至少 6 位" autocomplete="new-password" required />
+        </label>
+        <label>确认密码
+          <input type="password" id="reg-confirm" autocomplete="new-password" required />
+        </label>
+        <label>昵称 <span class="hint">（选填）</span>
+          <input type="text" id="reg-nickname" />
+        </label>
+        <label>邮箱 <span class="hint">（选填）</span>
+          <input type="email" id="reg-email" />
+        </label>
+        <button type="submit" class="btn btn-primary btn-block">注 册</button>
+        <p id="register-error" class="error-text"></p>
+      </form>
+    </div>
+  </div>
+
+  <div id="dashboard-view" class="layout hidden">
+    <header class="topbar lock-topbar">
+      <div class="brand">⌁ 服务器联通性检查</div>
+      <div class="topbar-right">
+        <span id="current-user"></span>
+        <button id="btn-logout" class="btn btn-ghost">退出登录</button>
+      </div>
+    </header>
+
+    <main class="content lock-content">
+      <section class="hero-grid">
+        <article class="panel account-panel">
+          <div class="panel-eyebrow">ACCOUNT ACCESS</div>
+          <div class="authorization-line">
+            <div>
+              <h2 id="p-username"></h2>
+              <p id="auth-detail" class="muted"></p>
+            </div>
+            <span id="authorization-badge" class="authorization-badge"></span>
+          </div>
+          <div class="metric-row">
+            <div class="metric"><span>积分余额</span><strong id="points-value">0</strong></div>
+            <div class="metric"><span>任务卡槽</span><strong><span id="slots-value">1</span> / 10</strong></div>
+            <div class="metric"><span>运行任务</span><strong id="running-value">0</strong></div>
+          </div>
+        </article>
+
+        <article class="panel store-panel">
+          <div class="panel-eyebrow">POINTS STORE</div>
+          <h2>卡槽商城</h2>
+          <p class="muted">增加同时运行的联通性检查数量。</p>
+          <div class="product-card">
+            <div class="product-icon">＋</div>
+            <div class="product-copy"><strong>任务卡槽 × 1</strong><span>永久增加一个并发任务位</span></div>
+            <div class="product-price"><strong>300</strong><span>积分</span></div>
+            <button id="btn-buy-slot" class="btn btn-primary">购买</button>
+          </div>
+        </article>
+      </section>
+
+      <section id="unauthorized-notice" class="notice notice-warning hidden">
+        <strong>当前账号未授权</strong>
+        <span>请联系管理员开通 1 天、1 个月或永久授权后再创建检查任务。</span>
+      </section>
+
+      <section id="task-console" class="panel task-console hidden">
+        <div class="section-heading">
+          <div>
+            <div class="panel-eyebrow">NEW CONNECTIVITY CHECK</div>
+            <h2>创建联通性检查</h2>
+          </div>
+          <span class="safe-note">每 5 秒检查一次，最长 300 秒</span>
+        </div>
+        <form id="task-form" class="task-form">
+          <label>服务器 IP
+            <input id="task-ip" type="text" placeholder="例如 203.0.113.10" required />
+          </label>
+          <label>端口
+            <input id="task-port" type="number" min="1" max="65535" placeholder="例如 25565" required />
+          </label>
+          <label>持续时间（秒）
+            <input id="task-duration" type="number" min="1" max="300" value="30" required />
+          </label>
+          <button type="submit" class="btn btn-primary task-submit">确定并执行</button>
+        </form>
+        <p id="task-error" class="error-text"></p>
+      </section>
+
+      <section class="tasks-section">
+        <div class="section-heading">
+          <div>
+            <div class="panel-eyebrow">SLOT TASKS</div>
+            <h2>卡槽任务</h2>
+          </div>
+          <button id="btn-refresh-tasks" class="btn">刷新</button>
+        </div>
+        <div id="task-grid" class="task-grid"></div>
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="app.js"></script>
+</body>
+</html>

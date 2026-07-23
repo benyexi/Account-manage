@@ -13,11 +13,27 @@ function load() {
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
   if (fs.existsSync(DB_FILE)) {
     cache = JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
-    // 旧数据角色迁移：user -> guest
+    // 旧数据迁移
     let migrated = false;
     for (const u of cache.users) {
       if (u.role === 'user') {
         u.role = 'guest';
+        migrated = true;
+      }
+      if (u.points === undefined) {
+        u.points = 0;
+        migrated = true;
+      }
+      if (u.slots === undefined) {
+        u.slots = 1;
+        migrated = true;
+      }
+      if (u.authorizationPermanent === undefined) {
+        u.authorizationPermanent = u.role === 'admin';
+        migrated = true;
+      }
+      if (u.authorizedUntil === undefined) {
+        u.authorizedUntil = null;
         migrated = true;
       }
     }
@@ -58,6 +74,10 @@ function createUser(fields) {
     status: fields.status || 'active',
     passwordHash: fields.passwordHash,
     remark: fields.remark || '',
+    points: Math.max(0, Number(fields.points) || 0),
+    slots: Math.min(Math.max(Number(fields.slots) || 1, 1), 10),
+    authorizationPermanent: fields.authorizationPermanent ?? fields.role === 'admin',
+    authorizedUntil: fields.authorizedUntil || null,
     createdAt: now,
     updatedAt: now,
     lastLoginAt: null,
@@ -70,7 +90,19 @@ function createUser(fields) {
 function updateUser(id, fields) {
   const user = findById(id);
   if (!user) return null;
-  const editable = ['nickname', 'email', 'role', 'status', 'passwordHash', 'remark', 'lastLoginAt'];
+  const editable = [
+    'nickname',
+    'email',
+    'role',
+    'status',
+    'passwordHash',
+    'remark',
+    'lastLoginAt',
+    'points',
+    'slots',
+    'authorizationPermanent',
+    'authorizedUntil',
+  ];
   for (const key of editable) {
     if (fields[key] !== undefined) user[key] = fields[key];
   }

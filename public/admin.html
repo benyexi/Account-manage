@@ -9,7 +9,7 @@
 <body>
   <div id="admin-view" class="layout hidden">
     <header class="topbar">
-      <div class="brand">⚙️ 账号管理后台</div>
+      <div class="brand">⚙️ 联通检查管理后台</div>
       <div class="topbar-right">
         <span id="current-user"></span>
         <button id="btn-change-pwd" class="btn btn-ghost">修改密码</button>
@@ -19,8 +19,9 @@
 
     <main class="content">
       <!-- 统计卡片 -->
-      <section class="stats stats-5" id="stats">
+      <section class="stats stats-6" id="stats">
         <div class="stat-card"><div class="stat-num" id="stat-total">-</div><div class="stat-label">总账号数</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-authorized">-</div><div class="stat-label">已授权</div></div>
         <div class="stat-card"><div class="stat-num" id="stat-admins">-</div><div class="stat-label">管理员</div></div>
         <div class="stat-card"><div class="stat-num" id="stat-guests">-</div><div class="stat-label">游客</div></div>
         <div class="stat-card"><div class="stat-num" id="stat-active">-</div><div class="stat-label">正常</div></div>
@@ -50,8 +51,8 @@
         <table>
           <thead>
             <tr>
-              <th>ID</th><th>用户名</th><th>昵称</th><th>邮箱</th><th>角色</th>
-              <th>状态</th><th>最近登录</th><th>创建时间</th><th>操作</th>
+              <th>ID</th><th>用户名</th><th>授权</th><th>积分</th><th>卡槽</th><th>角色</th>
+              <th>状态</th><th>最近登录</th><th>操作</th>
             </tr>
           </thead>
           <tbody id="user-tbody"></tbody>
@@ -86,6 +87,21 @@
         </select>
       </label>
       <label>备注 <input type="text" id="f-remark" /></label>
+      <label>授权时长
+        <select id="f-authorization">
+          <option value="unchanged">保持不变</option>
+          <option value="none">未授权</option>
+          <option value="day">授权 1 天</option>
+          <option value="month">授权 1 个月</option>
+          <option value="permanent">永久授权</option>
+        </select>
+      </label>
+      <label>积分
+        <input type="number" id="f-points" min="0" step="1" value="0" />
+      </label>
+      <label>任务卡槽
+        <input type="number" id="f-slots" min="1" max="10" step="1" value="1" />
+      </label>
       <p id="user-form-error" class="error-text"></p>
       <div class="modal-actions">
         <button type="button" class="btn" data-close>取消</button>

@@ -39,6 +39,18 @@ body {
 .login-card h1 { font-size: 22px; text-align: center; margin-bottom: 6px; }
 .login-sub { text-align: center; color: var(--muted); font-size: 13px; margin-bottom: 24px; }
 .login-card label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 14px; }
+.login-logo {
+  width: 48px;
+  height: 48px;
+  display: grid;
+  place-items: center;
+  margin: 0 auto 14px;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #101828, #344054);
+  color: #7dd3fc;
+  font-size: 30px;
+  font-weight: 800;
+}
 
 /* ---- 通用表单控件 ---- */
 input, select {
@@ -147,6 +159,7 @@ input:focus, select:focus { border-color: var(--primary); }
 /* ---- 统计卡片 ---- */
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; }
 .stats-5 { grid-template-columns: repeat(5, 1fr); }
+.stats-6 { grid-template-columns: repeat(6, 1fr); }
 .stat-card {
   background: var(--card);
   border-radius: 10px;
@@ -240,8 +253,188 @@ tbody tr:hover { background: #f8f9fd; }
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
 }
 
+/* ---- 服务器联通性检查控制台 ---- */
+.lock-topbar {
+  height: 64px;
+  background: #101828;
+  border-bottom: 1px solid #263349;
+}
+.lock-content {
+  max-width: 1180px;
+  padding-top: 8px;
+  padding-bottom: 48px;
+}
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1.15fr 0.85fr;
+  gap: 18px;
+  margin-bottom: 18px;
+}
+.panel {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 8px 30px rgba(16, 24, 40, 0.05);
+}
+.panel h2, .tasks-section h2 { font-size: 20px; margin: 4px 0 6px; }
+.panel-eyebrow {
+  color: #667085;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+}
+.muted { color: var(--muted); font-size: 13px; }
+.authorization-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 18px;
+  margin-top: 14px;
+}
+.authorization-badge {
+  flex: 0 0 auto;
+  padding: 7px 13px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 700;
+}
+.authorization-badge.is-authorized { color: #087443; background: #dff8eb; }
+.authorization-badge.is-unauthorized { color: #b42318; background: #fee4e2; }
+.metric-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 10px;
+  margin-top: 24px;
+}
+.metric {
+  padding: 14px;
+  border-radius: 10px;
+  background: #f8fafc;
+  border: 1px solid #eef2f6;
+}
+.metric span { display: block; color: #667085; font-size: 12px; margin-bottom: 5px; }
+.metric strong { color: #101828; font-size: 20px; }
+.product-card {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+  padding: 14px;
+  border-radius: 11px;
+  background: #f8fafc;
+  border: 1px solid #e4e7ec;
+}
+.product-icon {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 10px;
+  background: #e0f2fe;
+  color: #0369a1;
+  font-size: 24px;
+}
+.product-copy strong, .product-copy span, .product-price strong, .product-price span { display: block; }
+.product-copy span, .product-price span { color: var(--muted); font-size: 12px; margin-top: 3px; }
+.product-price { text-align: right; }
+.product-price strong { font-size: 18px; }
+.notice {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 18px;
+  margin-bottom: 18px;
+  border-radius: 11px;
+  font-size: 14px;
+}
+.notice-warning { background: #fffaeb; color: #7a2e0e; border: 1px solid #fedf89; }
+.notice span { color: #93370d; }
+.task-console { margin-bottom: 26px; }
+.section-heading {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+.safe-note {
+  color: #475467;
+  background: #f2f4f7;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+.task-form {
+  display: grid;
+  grid-template-columns: 1.4fr 0.7fr 0.8fr auto;
+  align-items: end;
+  gap: 12px;
+}
+.task-form label { color: #667085; font-size: 13px; }
+.task-form input { background: #fff; }
+.task-submit { height: 39px; white-space: nowrap; }
+.tasks-section { margin-top: 8px; }
+.task-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.task-card {
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-left: 4px solid #98a2b3;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 6px 22px rgba(16, 24, 40, 0.05);
+}
+.task-card.status-running { border-left-color: #2e90fa; }
+.task-card.status-completed { border-left-color: #12b76a; }
+.task-card.status-error { border-left-color: #f04438; }
+.task-card-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 14px; }
+.task-status { font-weight: 700; color: #344054; }
+.task-time { color: #98a2b3; font-size: 12px; }
+.task-endpoint {
+  display: grid;
+  grid-template-columns: 1.4fr 0.7fr 0.8fr;
+  gap: 10px;
+  padding: 12px;
+  background: #f8fafc;
+  border-radius: 9px;
+}
+.task-endpoint span, .task-endpoint strong { display: block; }
+.task-endpoint span { color: #98a2b3; font-size: 11px; margin-bottom: 4px; }
+.task-endpoint strong { color: #1d2939; font-size: 13px; word-break: break-all; }
+.task-result { color: #b42318; font-size: 13px; margin: 13px 0; }
+.task-result.reachable { color: #067647; }
+.task-error { color: var(--danger); font-size: 12px; margin: -4px 0 12px; }
+.empty-state {
+  grid-column: 1 / -1;
+  min-height: 180px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 1px dashed #d0d5dd;
+  border-radius: 14px;
+  color: #667085;
+  background: rgba(255,255,255,0.55);
+}
+.empty-state strong { color: #344054; margin: 7px 0 4px; }
+.empty-state span { font-size: 13px; }
+.empty-icon { font-size: 28px; color: #98a2b3; }
+
 @media (max-width: 720px) {
-  .stats, .stats-5 { grid-template-columns: repeat(2, 1fr); }
+  .stats, .stats-5, .stats-6 { grid-template-columns: repeat(2, 1fr); }
   .toolbar { flex-wrap: wrap; }
   .toolbar input { width: 100%; }
+  .hero-grid, .task-grid { grid-template-columns: 1fr; }
+  .task-form { grid-template-columns: 1fr; }
+  .metric-row { grid-template-columns: 1fr; }
+  .product-card { grid-template-columns: auto 1fr; }
+  .product-price { text-align: left; }
+  .product-card .btn { grid-column: 1 / -1; }
+  .task-endpoint { grid-template-columns: 1fr; }
+  .section-heading { align-items: flex-start; flex-direction: column; }
 }
