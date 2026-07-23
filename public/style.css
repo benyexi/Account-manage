@@ -75,6 +75,60 @@ input:focus, select:focus { border-color: var(--primary); }
 
 .error-text { color: var(--danger); font-size: 13px; margin-top: 10px; min-height: 18px; }
 
+/* ---- 登录/注册 tab ---- */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 18px;
+}
+.tab {
+  flex: 1;
+  padding: 10px 0;
+  background: none;
+  border: none;
+  font-size: 15px;
+  color: var(--muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+}
+.tab.active { color: var(--primary); border-bottom-color: var(--primary); font-weight: 600; }
+.hint { color: #b0b5c3; font-weight: 400; font-size: 12px; }
+
+/* ---- 个人中心 ---- */
+.content-narrow { max-width: 640px; }
+.profile-card {
+  background: var(--card);
+  border-radius: 12px;
+  padding: 28px;
+  box-shadow: 0 1px 4px rgba(20, 30, 60, 0.06);
+}
+.profile-head { display: flex; align-items: center; gap: 16px; margin-bottom: 22px; }
+.avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
+  font-size: 26px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.profile-name { font-size: 20px; font-weight: 700; margin-bottom: 6px; }
+.profile-head .tag { margin-right: 6px; }
+.profile-info { border-top: 1px solid var(--border); }
+.profile-info > div {
+  display: flex;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--border);
+  font-size: 14px;
+}
+.profile-info dt { width: 90px; color: var(--muted); flex-shrink: 0; }
+.profile-info dd { flex: 1; word-break: break-all; }
+.profile-actions { display: flex; gap: 10px; margin-top: 20px; }
+
 /* ---- 布局 ---- */
 .topbar {
   display: flex;
@@ -92,6 +146,7 @@ input:focus, select:focus { border-color: var(--primary); }
 
 /* ---- 统计卡片 ---- */
 .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 20px; }
+.stats-5 { grid-template-columns: repeat(5, 1fr); }
 .stat-card {
   background: var(--card);
   border-radius: 10px;
@@ -186,7 +241,7 @@ tbody tr:hover { background: #f8f9fd; }
 }
 
 @media (max-width: 720px) {
-  .stats { grid-template-columns: repeat(2, 1fr); }
+  .stats, .stats-5 { grid-template-columns: repeat(2, 1fr); }
   .toolbar { flex-wrap: wrap; }
   .toolbar input { width: 100%; }
 }

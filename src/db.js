@@ -13,6 +13,15 @@ function load() {
   if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true });
   if (fs.existsSync(DB_FILE)) {
     cache = JSON.parse(fs.readFileSync(DB_FILE, 'utf8'));
+    // 旧数据角色迁移：user -> guest
+    let migrated = false;
+    for (const u of cache.users) {
+      if (u.role === 'user') {
+        u.role = 'guest';
+        migrated = true;
+      }
+    }
+    if (migrated) save();
   } else {
     cache = { users: [], nextId: 1 };
   }
@@ -45,7 +54,7 @@ function createUser(fields) {
     username: fields.username,
     nickname: fields.nickname || '',
     email: fields.email || '',
-    role: fields.role || 'user',
+    role: fields.role || 'guest',
     status: fields.status || 'active',
     passwordHash: fields.passwordHash,
     remark: fields.remark || '',

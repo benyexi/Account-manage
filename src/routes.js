@@ -6,7 +6,7 @@ const auth = require('./auth');
 const router = express.Router();
 
 const USERNAME_RE = /^[a-zA-Z0-9_-]{3,32}$/;
-const ROLES = ['admin', 'user'];
+const ROLES = ['admin', 'guest'];
 const STATUSES = ['active', 'disabled'];
 
 function publicUser(u) {
@@ -32,6 +32,31 @@ function requireAdmin(req, res, next) {
   next();
 }
 
+// ---- 注册（公开，一律注册为游客）----
+router.post('/register', (req, res) => {
+  const { username, password, nickname, email } = req.body || {};
+  if (!USERNAME_RE.test(username || '')) {
+    return res.status(400).json({ error: '用户名须为 3-32 位字母、数字、下划线或连字符' });
+  }
+  if (!password || String(password).length < 6) {
+    return res.status(400).json({ error: '密码至少 6 位' });
+  }
+  if (db.findByUsername(username)) return res.status(409).json({ error: '用户名已存在' });
+
+  const user = db.createUser({
+    username,
+    nickname: String(nickname || '').slice(0, 64),
+    email: String(email || '').slice(0, 128),
+    role: 'guest', // 注册账号固定为游客，角色不接受前端传入
+    status: 'active',
+    passwordHash: auth.hashPassword(password),
+  });
+  // 注册成功后直接登录
+  db.updateUser(user.id, { lastLoginAt: new Date().toISOString() });
+  const token = auth.createSession(user.id);
+  res.status(201).json({ token, user: publicUser(db.findById(user.id)) });
+});
+
 // ---- 登录 / 退出 ----
 router.post('/login', (req, res) => {
   const { username, password } = req.body || {};
@@ -43,7 +68,7 @@ router.post('/login', (req, res) => {
   if (user.status !== 'active') return res.status(403).json({ error: '账号已被禁用' });
   db.updateUser(user.id, { lastLoginAt: new Date().toISOString() });
   const token = auth.createSession(user.id);
-  res.json({ token, user: publicUser(user) });
+  res.json({ token, user: publicUser(db.findById(user.id)) });
 });
 
 router.post('/logout', requireAuth, (req, res) => {
@@ -51,8 +76,19 @@ router.post('/logout', requireAuth, (req, res) => {
   res.json({ ok: true });
 });
 
+// ---- 个人中心（登录用户）----
 router.get('/me', requireAuth, (req, res) => {
   res.json({ user: publicUser(req.user) });
+});
+
+// 修改自己的昵称 / 邮箱
+router.put('/me', requireAuth, (req, res) => {
+  const { nickname, email } = req.body || {};
+  const fields = {};
+  if (nickname !== undefined) fields.nickname = String(nickname).slice(0, 64);
+  if (email !== undefined) fields.email = String(email).slice(0, 128);
+  const user = db.updateUser(req.user.id, fields);
+  res.json({ user: publicUser(user) });
 });
 
 // 修改自己的密码
@@ -67,7 +103,7 @@ router.post('/me/password', requireAuth, (req, res) => {
   res.json({ ok: true });
 });
 
-// ---- 用户管理（需管理员）----
+// ---- 账号管理（仅管理员）----
 router.get('/users', requireAuth, requireAdmin, (req, res) => {
   const { q = '', role = '', status = '', page = 1, pageSize = 10 } = req.query;
   let users = db.listUsers();
@@ -102,6 +138,7 @@ router.get('/stats', requireAuth, requireAdmin, (req, res) => {
     active: users.filter((u) => u.status === 'active').length,
     disabled: users.filter((u) => u.status === 'disabled').length,
     admins: users.filter((u) => u.role === 'admin').length,
+    guests: users.filter((u) => u.role === 'guest').length,
   });
 });
 
