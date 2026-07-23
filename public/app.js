@@ -267,9 +267,11 @@ $('#task-grid').addEventListener('click', async (event) => {
   const button = event.target.closest('[data-cancel-task]');
   if (!button) return;
   try {
-    await api('/tasks/' + button.dataset.cancelTask, { method: 'DELETE' });
+    const taskId = button.dataset.cancelTask;
+    await api('/tasks/' + taskId, { method: 'DELETE' });
+    state.tasks = state.tasks.filter((task) => task.id !== taskId);
+    renderTasks();
     toast('任务已取消');
-    await loadTasks();
   } catch (error) {
     toast(error.message);
   }

@@ -114,11 +114,14 @@ function startTask({ userId, ip, port, duration }) {
 function cancelTask(userId, taskId) {
   const task = tasks.get(taskId);
   if (!task || task.userId !== Number(userId)) return null;
-  if (task.status !== 'running') return publicTask(task);
-  task.status = 'cancelled';
-  task.finishedAt = new Date().toISOString();
-  task.child?.kill();
-  return publicTask(task);
+  if (task.status === 'running') {
+    task.status = 'cancelled';
+    task.finishedAt = new Date().toISOString();
+    task.child?.kill();
+  }
+  const cancelled = publicTask(task);
+  tasks.delete(taskId);
+  return cancelled;
 }
 
 function countRunning(userId) {
