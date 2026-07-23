@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>账号管理后台</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="admin-view" class="layout hidden">
+    <header class="topbar">
+      <div class="brand">⚙️ 账号管理后台</div>
+      <div class="topbar-right">
+        <span id="current-user"></span>
+        <button id="btn-change-pwd" class="btn btn-ghost">修改密码</button>
+        <button id="btn-logout" class="btn btn-ghost">退出登录</button>
+      </div>
+    </header>
+
+    <main class="content">
+      <!-- 统计卡片 -->
+      <section class="stats stats-5" id="stats">
+        <div class="stat-card"><div class="stat-num" id="stat-total">-</div><div class="stat-label">总账号数</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-admins">-</div><div class="stat-label">管理员</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-guests">-</div><div class="stat-label">游客</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-active">-</div><div class="stat-label">正常</div></div>
+        <div class="stat-card"><div class="stat-num" id="stat-disabled">-</div><div class="stat-label">已禁用</div></div>
+      </section>
+
+      <!-- 工具栏 -->
+      <section class="toolbar">
+        <input type="text" id="search-input" placeholder="搜索用户名 / 昵称 / 邮箱" />
+        <select id="filter-role">
+          <option value="">全部角色</option>
+          <option value="admin">管理员</option>
+          <option value="guest">游客</option>
+        </select>
+        <select id="filter-status">
+          <option value="">全部状态</option>
+          <option value="active">正常</option>
+          <option value="disabled">已禁用</option>
+        </select>
+        <button id="btn-search" class="btn">查询</button>
+        <div class="spacer"></div>
+        <button id="btn-add" class="btn btn-primary">＋ 新增账号</button>
+      </section>
+
+      <!-- 用户表格 -->
+      <section class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th><th>用户名</th><th>昵称</th><th>邮箱</th><th>角色</th>
+              <th>状态</th><th>最近登录</th><th>创建时间</th><th>操作</th>
+            </tr>
+          </thead>
+          <tbody id="user-tbody"></tbody>
+        </table>
+        <div class="pagination">
+          <button id="btn-prev" class="btn">上一页</button>
+          <span id="page-info"></span>
+          <button id="btn-next" class="btn">下一页</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <!-- 新增/编辑账号弹窗 -->
+  <div id="user-modal" class="modal-mask hidden">
+    <form id="user-form" class="modal">
+      <h2 id="user-modal-title">新增账号</h2>
+      <label>用户名 <input type="text" id="f-username" required /></label>
+      <label>密码 <input type="password" id="f-password" placeholder="至少 6 位" /></label>
+      <label>昵称 <input type="text" id="f-nickname" /></label>
+      <label>邮箱 <input type="email" id="f-email" /></label>
+      <label>角色
+        <select id="f-role">
+          <option value="guest">游客</option>
+          <option value="admin">管理员</option>
+        </select>
+      </label>
+      <label>状态
+        <select id="f-status">
+          <option value="active">正常</option>
+          <option value="disabled">禁用</option>
+        </select>
+      </label>
+      <label>备注 <input type="text" id="f-remark" /></label>
+      <p id="user-form-error" class="error-text"></p>
+      <div class="modal-actions">
+        <button type="button" class="btn" data-close>取消</button>
+        <button type="submit" class="btn btn-primary">保存</button>
+      </div>
+    </form>
+  </div>
+
+  <!-- 修改密码弹窗 -->
+  <div id="pwd-modal" class="modal-mask hidden">
+    <form id="pwd-form" class="modal">
+      <h2>修改我的密码</h2>
+      <label>原密码 <input type="password" id="p-old" required /></label>
+      <label>新密码 <input type="password" id="p-new" required placeholder="至少 6 位" /></label>
+      <label>确认新密码 <input type="password" id="p-confirm" required /></label>
+      <p id="pwd-form-error" class="error-text"></p>
+      <div class="modal-actions">
+        <button type="button" class="btn" data-close>取消</button>
+        <button type="submit" class="btn btn-primary">保存</button>
+      </div>
+    </form>
+  </div>
+
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="admin.js"></script>
+</body>
+</html>

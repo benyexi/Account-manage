@@ -11,6 +11,11 @@ app.use(express.json());
 app.use('/api', routes);
 app.use(express.static(path.join(__dirname, 'public')));
 
+// 管理员界面挂在 /admin，游客入口（登录/注册/个人中心)在 /
+app.get('/admin', (req, res) => {
+  res.sendFile(path.join(__dirname, 'public', 'admin.html'));
+});
+
 // 首次启动时创建默认管理员
 function ensureAdmin() {
   if (db.listUsers().length > 0) return;
